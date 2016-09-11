@@ -1,0 +1,32 @@
+.canvas-container
+{
+    text-align: center;
+}
+
+canvas
+{
+    background: white;
+    margin: 10% 0 10% 0;
+    border: 1px solid;
+}
+
+body
+{
+    min-width: 820px;
+}
+
+label
+{
+    min-width: 20px;
+}
+
+.form-container
+{
+    text-align: center;
+}
+
+    .form-container .field
+    {
+        display: inline-block;
+        margin-left: 7px;
+    }
