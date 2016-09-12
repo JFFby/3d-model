@@ -12,7 +12,7 @@ canvas
 
 body
 {
-    min-width: 820px;
+    min-width: 960px;
 }
 
 label
@@ -30,3 +30,11 @@ label
         display: inline-block;
         margin-left: 7px;
     }
+
+.field label{
+    margin-right: 5px;
+}
+
+.field select{
+    min-width: 100px;
+}

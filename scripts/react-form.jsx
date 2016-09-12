@@ -7,6 +7,7 @@ var Form = React.createClass({
 				 <Input data={"r2"} value={shapes_settings.r2} ref="r2"/>
 				 <Input data={"h"} value={shapes_settings.h} ref="h"/>
 				 <Input data={"n"} value={shapes_settings.n} ref="n"/>
+                 <Select data={"Action"} values={['move', 'rotate']} />
             </div>
         );
     }
@@ -26,6 +27,28 @@ var Input = React.createClass({
             <div className="field">
                     <label>{this.props.data}</label>
                     <input type="text" ref='inputName' onChange={this.onChange} />
+            </div>
+        );
+    }
+});
+
+var Select = React.createClass({
+    componentDidMount: function(){
+        listener.setState(this.props.values[0])
+    },
+    onChange : function(event){
+        var index = event.nativeEvent.target.selectedIndex;
+        var value = event.nativeEvent.target[index].text
+        listener.setState(value);
+    },
+    render: function(){
+        return (
+            <div className="field">
+                    <label>{this.props.data}</label>
+                    <select defaultValue={this.props.values[0]} onChange={this.onChange}>
+                        {this.props.values.map(v => 
+                            <option key={v} value={v}>{v}</option>)}
+                    </select>
             </div>
         );
     }

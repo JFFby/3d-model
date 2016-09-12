@@ -20,4 +20,11 @@ function LineDesigner(ctx){
             drawLine(lines[i]);
         }
     };
+
+    this.cleanAndDraw = function(shapes){
+        clearCanvas();
+        for(var i = 0; i < shapes.length; ++i){
+            this.draw(shapes[i]);
+        }
+    };
 }
