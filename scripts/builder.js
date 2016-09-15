@@ -1,10 +1,6 @@
-function Builder(canvas){
+function Builder(){
     
-    var x_center = canvas.width / 2,
-        z_center = 0,
-        y_center = (canvas.height / 2) + 135;
-
-    var buildLines = function (obj) {
+   var buildLines = function (obj) {
         var points = obj.points;
         var baseLines = [];
         var verticalLines = [];
@@ -23,13 +19,13 @@ function Builder(canvas){
     };
 
     var createPoint = function(x, z){
-        return new Point.fromXYZ(x + x_center, y_center, z + z_center);
+        return new Point.fromXYZ(x, 0, z);
     };
 
     var calculateCenter = function(h){
-        return {
-            center: Point.fromXYZ(x_center, y_center, z_center),
-            top: Point.fromXYZ(x_center, y_center - h, z_center)
+         return {
+            center: Point.fromXYZ(0, 0, 0),
+            top: Point.fromXYZ(0, 0 - h, 0)
         };
     };
 

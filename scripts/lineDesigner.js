@@ -1,15 +1,18 @@
-function LineDesigner(ctx){
+function LineDesigner(ctx, canvas){
     
+     var x_center = canvas.width / 2,
+        z_center = 0,
+        y_center = (canvas.height / 2) + 135;    
     ctx.lineWidth = 1;
 
-    var getCoordinate = function(c){
-        return c; //(c * -1) + c*2;
+    var getCoordinate = function(c, axis){
+        return c + (axis === 'x' ? x_center : y_center)
     };
 
     var drawLine = function(line){
         ctx.beginPath();
-        ctx.moveTo(getCoordinate(line.from.x),getCoordinate(line.from.y));
-        ctx.lineTo(getCoordinate(line.to.x),getCoordinate(line.to.y));
+        ctx.moveTo(getCoordinate(line.from.x, 'x'),getCoordinate(line.from.y, 'y'));
+        ctx.lineTo(getCoordinate(line.to.x, 'x'),getCoordinate(line.to.y, 'y'));
         ctx.stroke();
     };
 

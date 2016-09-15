@@ -34,7 +34,7 @@ var Input = React.createClass({
 
 var Select = React.createClass({
     componentDidMount: function(){
-        listener.setState(this.props.values[0])
+        listener.setState(this.props.values[1])
     },
     onChange : function(event){
         var index = event.nativeEvent.target.selectedIndex;
@@ -45,7 +45,7 @@ var Select = React.createClass({
         return (
             <div className="field">
                     <label>{this.props.data}</label>
-                    <select defaultValue={this.props.values[0]} onChange={this.onChange}>
+                    <select defaultValue={this.props.values[1]} onChange={this.onChange}>
                         {this.props.values.map(v => 
                             <option key={v} value={v}>{v}</option>)}
                     </select>

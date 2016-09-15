@@ -5,10 +5,12 @@ canvas.width  = 1200;
 canvas.height = 600;
 var context = canvas.getContext('2d');
 
-var builder = new Builder(canvas); 
-var designer = new LineDesigner(context);
+var builder = new Builder(); 
+var designer = new LineDesigner(context, canvas);
 var listener = new KeyboardListener();
 var mover = new Mover();
+var rotator = new Rotator();
+var scaleHandler = new ScaleHandler();
 
 d3_model.start(shapes_settings);
 listener.listen({
@@ -34,22 +36,22 @@ listener.listen({
     },
     rotate: {
         ArrowUp: function(){
-            console.log('up');
+            rotator.rotate(3,'x');
         },
         ArrowDown: function(){
-            console.log('down');
+            rotator.rotate(-3,'x');
         },
         ArrowLeft: function(){
-            console.log('left');
+            rotator.rotate(3,'z');
         },
         ArrowRight: function(){
-            console.log('right');
+            rotator.rotate(-3,'z');
         },
         KeyW: function(){
-            console.log('forward');
+            rotator.rotate(3,'y');
         },
         KeyS: function(){
-            console.log('back');
+            rotator.rotate(-3,'y');
         }
     }
 });
