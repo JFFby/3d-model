@@ -1,9 +1,36 @@
 function ProjectionBuilder(){
+
+    var matrixStorage = {
+        front: function(){
+            return zOrtMatrix;        
+        },
+        prof: function(){
+            return xOrtMatrix;
+        },
+        gor: function(){
+            return  yOrtMatrix;
+        },
+        aks: function(a, s){
+            return getOksanometMatrix(a, s);
+        }
+    };
+
+    var getMatrix = function(name, p1, p2){
+        return matrixStorage[name](p1, p2);
+    };
+
+    this.create = function(name, p1, p2){
+        var sw = new Sw('projection: ' + name) ;
+        var matrix = getMatrix(name, p1, p2);
+        transformationHelper.drawProjection(matrix);
+        sw.stop();
+    };
+
     var zOrtMatrix = [
-        [1, 0,0,0],
-        [0,1,0,],
-        [0,0,0,0],
-        [0,0,0,1]
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 1]
     ];
 
     var xOrtMatrix = [

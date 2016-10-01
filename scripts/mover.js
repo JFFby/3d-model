@@ -12,14 +12,7 @@ function Mover(){
     this.move = function(dx, dy, dz){
         var sw = new Sw('move: ') ;
         var moveMatrix = createMoveMatrix(dx, dy, dz);
-        for(var i = 0; i < d3_model.shapes.length; ++i){
-            d3_model.shapes[i].base = 
-                transformationHelper.processArray( d3_model.shapes[i].base, moveMatrix);
-            d3_model.shapes[i].vertical = 
-                transformationHelper.processArray( d3_model.shapes[i].vertical, moveMatrix);
-        }
-
-        designer.cleanAndDraw(d3_model.shapes);
+       transformationHelper.transform(moveMatrix);
         sw.stop();
     };
 }

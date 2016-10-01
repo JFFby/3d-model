@@ -16,6 +16,10 @@ function LineDesigner(ctx, canvas){
         ctx.stroke();
     };
 
+    this.clear = function(){
+        clearCanvas();
+    };
+
     this.draw = function(shape){
         var lines = shape.base.concat(shape.vertical);
         ctx.strokeStyle = shape.c;

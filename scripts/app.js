@@ -11,6 +11,7 @@ var listener = new KeyboardListener();
 var mover = new Mover();
 var rotator = new Rotator();
 var scaleHandler = new ScaleHandler();
+var projectionBuilder = new ProjectionBuilder();
 
 d3_model.start(shapes_settings);
 listener.listen({

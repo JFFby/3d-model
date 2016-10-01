@@ -53,3 +53,11 @@ label
     display: inline-block;
     margin-right: 7px;
 }
+
+.proj-control-wrapper{
+    margin-top: 7px;
+}
+
+.proj-control-wrapper label{
+    margin-right: 7px;
+}

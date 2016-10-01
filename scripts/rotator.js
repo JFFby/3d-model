@@ -10,14 +10,7 @@ class Rotator{
     rotate(alpha, axis){
         var sw = new Sw('rotate: ') ;
         var rotateMatrix = this.matrixes[axis](alpha)
-        for(var shape of d3_model.shapes){
-             shape.base = 
-                transformationHelper.processArray( shape.base, rotateMatrix);
-            shape.vertical = 
-                transformationHelper.processArray( shape.vertical, rotateMatrix);
-        }
-
-        designer.cleanAndDraw(d3_model.shapes);
+        transformationHelper.transform(rotateMatrix);
         sw.stop();
     }
 

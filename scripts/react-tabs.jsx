@@ -27,28 +27,31 @@ var Tab = React.createClass({
     }
 });
 
-var Tabs = React.createClass({
-    render: function(){
-        return (
-            <ul className="tabs-wrapper">
-                <Tab data={"transformations"} id={"transform"}
-                    checked={true} event={clearProjections}/>
-                <Tab data={"projections"} id={"projection"}/>
-            </ul>
-        );
+var Tabs = React.createClass((function(){
+
+    function clearProjections(){
+        var projections = 
+        document.getElementsByClassName('profection-type');
+        for(var i = 0; i < projections.length; ++i){
+            var radio = projections[i].getElementsByTagName('input')[0];
+            radio.checked = false;
+        }
     }
-});
+
+    return {
+        render: function(){
+            return (
+                <ul className="tabs-wrapper">
+                    <Tab data={"transformations"} id={"transform"}
+                        checked={true} event={clearProjections}/>
+                    <Tab data={"projections"} id={"projection"}/>
+                </ul>
+            );
+        }
+    };
+})());
 
 ReactDOM.render(
     <Tabs />,
     document.getElementById('tabs')
 );
-
-function clearProjections(){
-    var projections = 
-        document.getElementsByClassName('profection-type');
-    for(var i = 0; i < projections.length; ++i){
-        var radio = projections[i].getElementsByTagName('input')[0];
-        radio.checked = false;
-    }
-}
