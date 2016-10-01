@@ -38,3 +38,18 @@ label
 .field select{
     min-width: 100px;
 }
+
+.tabs-container{
+    text-align: center;
+    list-style: none;
+}
+
+.tabs-container li{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.profection-type{
+    display: inline-block;
+    margin-right: 7px;
+}

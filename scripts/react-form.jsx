@@ -1,5 +1,4 @@
-
-var Form = React.createClass({
+var TransformForm = React.createClass({
     render: function(){
         return (
             <div className="field-wrapper">
@@ -55,6 +54,6 @@ var Select = React.createClass({
 });
 
 ReactDOM.render(
-    <Form />,
-    document.getElementById('form')
+    <TransformForm />,
+    document.getElementById('transform-form')
 );
