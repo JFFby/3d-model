@@ -26,12 +26,24 @@ function LineDesigner(ctx, canvas){
         for(var i = 0; i < lines.length; ++i){
             drawLine(lines[i]);
         }
+        
+        drawCenterInfo(shape);
     };
 
-    this.cleanAndDraw = function(shapes){
-        clearCanvas();
+    var drawShapes = function(shapes){
         for(var i = 0; i < shapes.length; ++i){
             this.draw(shapes[i]);
         }
+    };
+
+    var drawCenterInfo = _.throttle(function(shape){
+        var span = document.getElementById('center-info');
+        span.innerText = shape.center[0].toString();
+    }, 50);
+
+    this.cleanAndDraw = function(shapes){
+        clearCanvas();
+        drawShapes(shapes);
+        drawCenterInfo(shapes[0]);
     };
 }

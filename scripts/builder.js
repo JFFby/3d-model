@@ -1,6 +1,6 @@
 function Builder(){
     
-   var buildLines = function (obj) {
+    var buildLines = function (obj) {
         var points = obj.points;
         var baseLines = [];
         var verticalLines = [];
@@ -14,7 +14,8 @@ function Builder(){
      
         return {
             base: baseLines,
-            vertical: verticalLines
+            vertical: verticalLines,
+            center: [obj.center]
         };
     };
 
@@ -23,7 +24,7 @@ function Builder(){
     };
 
     var calculateCenter = function(h){
-         return {
+        return {
             center: Point.fromXYZ(0, 0, 0),
             top: Point.fromXYZ(0, 0 - h, 0)
         };

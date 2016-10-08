@@ -60,11 +60,21 @@ var ProjectionForm = React.createClass((function(){
         kos: {
             p1: {
                 name:  'l',
-                value: 5    
+                value: 1    
             },
             p2: {
+                name: 'alpha',
+                value: 10
+            }
+        },
+        persp:{
+            p1:{
                 name: 'd',
-                value: 20
+                value: 1
+            },
+            p2:{
+                name: 'none',
+                value: 0
             }
         }
     };
@@ -127,7 +137,9 @@ var ProjectionForm = React.createClass((function(){
                     <ProjectionButton 
                         name={"proj-aks"} label={"Аксонометрическая"} onClick={this.onClick}/>
                      <ProjectionButton 
-                        name={"proj-kos"} label={"Косоугольная"} onClick={this.onClick}/>   
+                        name={"proj-kos"} label={"Косоугольная"} onClick={this.onClick}/>  
+                    <ProjectionButton 
+                        name={"proj-persp"} label={"Перспективная"} onClick={this.onClick}/>   
                     {this.state.showControls ?
                         <ProfectionAdditionControls id={this.state.p1.name}
                             value={this.state.p1.value} onChange={this.onClick} />  :

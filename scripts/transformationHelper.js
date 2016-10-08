@@ -1,37 +1,10 @@
 var transformationHelper = (function(){
     
-    var createMatrixFromPoint = function(point){
-        return [point.x, point.y, point.z, 1];
-    };
-
-    var fromArrayToPoint = function(array){
-        return new Point.fromXYZ(array[0], array[1], array[2]);
-    };
-
     var points = ['from', 'to'];
+    var lineGroups = ['base', 'vertical', 'center'];
 
-    var processSingleLine = function(line, moveMatrix){
-        var newLine = {};
-        for(var j = 0; j < points.length; ++j){
-            var point = line[points[j]];
-            var pointArray = createMatrixFromPoint(point);
-            var _pointArray = math.multiply(pointArray, moveMatrix);
-            newLine[points[j]] = fromArrayToPoint(_pointArray);
-        }
-
-        return newLine;
-    };
-
-    var processArray = function(lines, moveMatrix){
-        var result = [];
-        for(var i = 0; i < lines.length; ++ i){
-            var line = lines[i];
-            var newLine = processSingleLine(line, moveMatrix);
-            result.push(newLine);   
-        }
-
-        return result;
-    };
+    var lineTransformator = new LineTransformator(points);
+    var dimentionSwapper = new DimentionSwapper(lineGroups, points)
 
     var baseTransformation = function(matrix, transformation){
         designer.clear();
@@ -41,12 +14,20 @@ var transformationHelper = (function(){
             designer.draw(transformadShape);           
         }
     };
+    
+    var projectionsNeededInSwapingDimention = [
+            { name: 'prof', from: 'z', to:'x'},
+            { name: 'gor', from: 'z', to:'y'}
+        ];
 
     var transform = function(shape, matrix){
-        shape.base = processArray( shape.base, matrix);
-        shape.vertical = processArray( shape.vertical, matrix);
+        for(var i = 0; i < lineGroups.length; ++ i){
+            var lineGroup = lineGroups[i];
+            shape[lineGroup] = lineTransformator.processLineGroup(shape[lineGroup], matrix);
+        }
+
         return shape;
-    };
+    };   
 
     return {
         transform: function(matrix){
@@ -55,10 +36,16 @@ var transformationHelper = (function(){
             });
         },
 
-        drawProjection: function(matrix){
+        drawProjection: function(matrix, name){
             baseTransformation(matrix, function(shape){
                 var projection = _.merge({}, shape);
-                return transform(projection, matrix);
+                var createdProfection = transform(projection, matrix);
+                var dimentionSwapRule =  _.find(
+                        projectionsNeededInSwapingDimention,
+                        o => o.name === name);
+                return dimentionSwapRule ?
+                    dimentionSwapper.swapDimention(createdProfection,dimentionSwapRule.from, dimentionSwapRule.to) :
+                    createdProfection;
             });
         } 
     };

@@ -17,3 +17,7 @@ Point.fromXYZ = function (x, y, z) {
     return p;  
 };
 
+Point.prototype.toString = function(){
+    return 'x: ' + this.x + ' y: ' + this.y + ' z: ' + this.z;
+};
+

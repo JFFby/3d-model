@@ -12,6 +12,12 @@ function ProjectionBuilder(){
         },
         aks: function(a, s){
             return getOksanometMatrix(a, s);
+        },
+        kos: function(l, alpha){
+            return getKosMatrix(l, alpha);
+        },
+        persp: function(d){
+            return getPerspectiveMatrix(d);
         }
     };
 
@@ -22,7 +28,7 @@ function ProjectionBuilder(){
     this.create = function(name, p1, p2){
         var sw = new Sw('projection: ' + name) ;
         var matrix = getMatrix(name, p1, p2);
-        transformationHelper.drawProjection(matrix);
+        transformationHelper.drawProjection(matrix, name);
         sw.stop();
     };
 
@@ -67,4 +73,13 @@ function ProjectionBuilder(){
             [0, 0, 0, 1]
         ];
     };
+
+    var getPerspectiveMatrix = function(d){
+        return [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 1/d],
+            [0, 0, 0, 0]
+        ];
+    }
 }

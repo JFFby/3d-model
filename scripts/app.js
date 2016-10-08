@@ -1,8 +1,8 @@
 var sw = new Sw('building: ') ;
 
 var canvas = document.getElementById('canvas');
-canvas.width  = 1200;
-canvas.height = 600;
+canvas.width  = 1000;
+canvas.height = 500;
 var context = canvas.getContext('2d');
 
 var builder = new Builder(); 
