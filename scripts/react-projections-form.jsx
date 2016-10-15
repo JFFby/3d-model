@@ -71,43 +71,57 @@ var ProjectionForm = React.createClass((function(){
             p1:{
                 name: 'd',
                 value: 1
-            },
-            p2:{
-                name: 'none',
-                value: 0
             }
         }
     };
     
-    var processRadioChange = function(name){
-        var config = additionalControlsInfo[name];
-        var state = {showControls: false, proj: name};
-        if(config) {
-            state.showControls = true;
-            _.merge(state, config);
+    var delayedSetter = function(p){
+        var timer = setTimeout(function(){
+            var input = document.getElementById(p.name);
+            if(!input){
+                delayedSetter(p);
+            }
+
+            input.value = p.value;
+        }, 15);
+    };
+
+    var updateParameters = function(config){
+        for(var p in config){
+            if(config.hasOwnProperty(p)){
+                delayedSetter(config[p]);
+            }
         }
+    };
+
+    var processRadioChange = function(name){
+        
+        var config = additionalControlsInfo[name] || {};
+        var state = { proj: name};
+        updateParameters(config);
+         _.merge(state, {controls: config});
 
         this.setState(state);
         return getProjection.call({state: state});
     };
 
     var getProjection = function(){
-        var p1 = this.state.p1;
-        return {
-            proj: this.state.proj,
-            p1: p1 ? p1.value : 0,
-            p2: p1 ? this.state.p2.value : 0
-        };
+        var args = [this.state.proj];
+        var i = 1;
+        for(var p in this.state.controls){
+            if(this.state.controls.hasOwnProperty(p)){
+                args[i++] = this.state.controls[p].value;
+            }
+        }
+
+        return args;
     };
 
     var processAdditionalValueChange = function(element){
-        var pn = this.state.p1.name == element.id ? 'p1' : 'p2';
-        var nextStateValue = {};
-        nextStateValue[pn] = {value: +element.value, name: element.id};
-        this.setState(nextStateValue);
-        var nextValue = {};
-        nextValue[pn] = +element.value;
-        return _.merge(getProjection.call(this, name), nextValue);
+        var oldValueObject = _.find(this.state.controls, {name: element.id});
+        oldValueObject.value = +element.value;
+        this.setState(this.state);
+        return getProjection.call({state: this.state}, name);
     };
 
     return {
@@ -115,17 +129,29 @@ var ProjectionForm = React.createClass((function(){
             return {showControls: false};
         },
         onClick: function(target, name){
-            var p;
+            var args;
+            
             if(name){
-                p = processRadioChange.call(this, name);
+                args = processRadioChange.call(this, name);
             }else {
                 var element = target.refs.inputName;
-                p = processAdditionalValueChange.call(this, element);
+                args = processAdditionalValueChange.call(this, element);
             }
             
-            projectionBuilder.create(p.proj, p.p1, p.p2);
+            projectionBuilder.create(args);
         },
         render:function() {
+            var controls = this.state.controls;
+            var htmlControls = [];
+            var i = 0;
+            if(controls){
+                for(var p in controls){
+                    htmlControls[i] = <ProfectionAdditionControls id={controls[p].name}
+                        value={controls[p].value} onChange={this.onClick} key={i} />
+                    ++i;
+                }  
+            }
+
             return (
                 <div className="projection-wrapper">
                     <ProjectionButton 
@@ -140,14 +166,7 @@ var ProjectionForm = React.createClass((function(){
                         name={"proj-kos"} label={"Косоугольная"} onClick={this.onClick}/>  
                     <ProjectionButton 
                         name={"proj-persp"} label={"Перспективная"} onClick={this.onClick}/>   
-                    {this.state.showControls ?
-                        <ProfectionAdditionControls id={this.state.p1.name}
-                            value={this.state.p1.value} onChange={this.onClick} />  :
-                         null}
-                    {this.state.showControls ? 
-                        <ProfectionAdditionControls id={this.state.p2.name} 
-                            value={this.state.p2.value}  onChange={this.onClick}/>  :
-                         null}
+                        {htmlControls.map((o, i) => o)}
                 </div>
                 );
         }

@@ -36,10 +36,13 @@ var transformationHelper = (function(){
             });
         },
 
-        drawProjection: function(matrix, name){
-            baseTransformation(matrix, function(shape){
-                var projection = _.merge({}, shape);
-                var createdProfection = transform(projection, matrix);
+        drawProjection: function(matrixes, name){
+            baseTransformation(matrixes, function(shape){
+                var createdProfection = _.merge({}, shape);
+                for(var i = 0; i < matrixes.length; ++ i){
+                    createdProfection = transform(createdProfection, matrixes[i]);
+                }
+
                 var dimentionSwapRule =  _.find(
                         projectionsNeededInSwapingDimention,
                         o => o.name === name);

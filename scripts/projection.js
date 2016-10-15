@@ -2,32 +2,52 @@ function ProjectionBuilder(){
 
     var matrixStorage = {
         front: function(){
-            return zOrtMatrix;        
+            return [zOrtMatrix];        
         },
         prof: function(){
-            return xOrtMatrix;
+            return [xOrtMatrix];
         },
         gor: function(){
-            return  yOrtMatrix;
+            return  [yOrtMatrix];
         },
-        aks: function(a, s){
-            return getOksanometMatrix(a, s);
+        aks: function(args){
+            var a = args[0];
+            var s = args[1];
+            return [getOksanometMatrix(a, s)];
         },
-        kos: function(l, alpha){
-            return getKosMatrix(l, alpha);
+        kos: function(args){
+            var l = args[0];
+            var alpha = args[1];
+            return [getKosMatrix(l, alpha)];
         },
-        persp: function(d){
-            return getPerspectiveMatrix(d);
+        persp: function(args){
+            var d = args[0];
+            return [getPerspectiveMatrix(d)];
+        },
+        vp: function(args){
+            var theta = args[0];
+            var sigma = args[1];
+            var ro = args[2];
+            var d = args[3];
+            return [
+                getMatrixForVidovoePreobrazovanie(theta, sigma, ro),
+                getPerspectiveMatrix(d)
+            ];
         }
     };
 
-    var getMatrix = function(name, p1, p2){
-        return matrixStorage[name](p1, p2);
+    var getMatrixes = function(args){
+        return matrixStorage[getName(args)](args.slice(1));
     };
 
-    this.create = function(name, p1, p2){
+    var getName = function(array){
+        return array[0];
+    };
+
+    this.create = function(args){
+        var name = getName(args);
         var sw = new Sw('projection: ' + name) ;
-        var matrix = getMatrix(name, p1, p2);
+        var matrix = getMatrixes(args);
         transformationHelper.drawProjection(matrix, name);
         sw.stop();
     };
@@ -81,5 +101,14 @@ function ProjectionBuilder(){
             [0, 0, 1, 1/d],
             [0, 0, 0, 0]
         ];
-    }
+    };
+
+    var getMatrixForVidovoePreobrazovanie = function(theta, sigma, ro){
+        return [
+            [-1 * Math.sin(theta), -1 * Math.cos(sigma) * Math.cos(theta), -1 * Math.sin(sigma) * Math.cos(theta), 0],
+            [Math.cos(theta), -1 * Math.cos(sigma) * Math.sin(theta), -1 * Math.sin(theta) * Math.sin(sigma), 0],
+            [0, Math.sin(sigma), -1 * Math.cos(sigma), 0],
+            [0, 0, ro, 1]
+        ];
+    };
 }
