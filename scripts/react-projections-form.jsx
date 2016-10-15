@@ -72,6 +72,24 @@ var ProjectionForm = React.createClass((function(){
                 name: 'd',
                 value: 1
             }
+        },
+        vp: {
+            p1:{
+                name: 'theta',
+                value: 90
+            },
+            p2:{
+                name: 'fi',
+                value:0
+            },
+            p3: {
+                name: 'ro',
+                value:1
+            },
+            p4: {
+                name: 'd',
+                value: 1
+            }
         }
     };
     
@@ -166,6 +184,8 @@ var ProjectionForm = React.createClass((function(){
                         name={"proj-kos"} label={"Косоугольная"} onClick={this.onClick}/>  
                     <ProjectionButton 
                         name={"proj-persp"} label={"Перспективная"} onClick={this.onClick}/>   
+                    <ProjectionButton 
+                        name={"proj-vp"} label={"Видовое преобразование"} onClick={this.onClick}/>       
                         {htmlControls.map((o, i) => o)}
                 </div>
                 );

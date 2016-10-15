@@ -25,8 +25,8 @@ function ProjectionBuilder(){
             return [getPerspectiveMatrix(d)];
         },
         vp: function(args){
-            var theta = args[0];
-            var sigma = args[1];
+            var theta = toRad(args[0]);
+            var sigma = toRad(args[1]);
             var ro = args[2];
             var d = args[3];
             return [
