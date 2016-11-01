@@ -4,6 +4,7 @@ function LineDesigner(ctx, canvas){
         z_center = 0,
         y_center = (canvas.height / 2) + 135;    
     ctx.lineWidth = 1;
+	
 
     var getCoordinate = function(c, axis){
         return c + (axis === 'x' ? x_center : y_center)
@@ -20,8 +21,22 @@ function LineDesigner(ctx, canvas){
         clearCanvas();
     };
 
+    // var getLines = function(shape){
+    //     return shape.base.concat(shape.vertical);
+    // };
+
+    var getLines = function(shape){
+        var lines = [];
+        for(var i = 0; i < shape.faces.length; ++i){
+            lines = lines.concat(shape.faces[i].getFaceLines(shape));
+        } 
+
+        lines = _.uniq(lines);
+        return lines;  
+    };
+
     this.draw = function(shape){
-        var lines = shape.base.concat(shape.vertical);
+        var lines = getLines(shape);
         ctx.strokeStyle = shape.c;
         for(var i = 0; i < lines.length; ++i){
             drawLine(lines[i]);

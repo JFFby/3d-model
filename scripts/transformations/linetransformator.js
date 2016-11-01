@@ -6,6 +6,9 @@ function LineTransformator(points){
 
     var fromArrayToPoint = function(array){
         var divider = array[3];
+
+        if(divider < 0.1) divider = 0.1;
+
         return new Point.fromXYZ(array[0] / divider, array[1] / divider, array[2] / divider);
     };
 
@@ -26,7 +29,7 @@ function LineTransformator(points){
     };
     
     var processSingleLine = function(line, moveMatrix){
-        var newLine = {};
+        var newLine = {id: line.id};
         for(var j = 0; j < points.length; ++j){
             var point = line[points[j]];
             newLine[points[j]] = processPoint(point, moveMatrix);

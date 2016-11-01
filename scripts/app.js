@@ -12,6 +12,7 @@ var mover = new Mover();
 var rotator = new Rotator();
 var scaleHandler = new ScaleHandler();
 var projectionBuilder = new ProjectionBuilder();
+var facesBuilder = new FacesBuilder();
 
 d3_model.start(shapes_settings);
 listener.listen({
@@ -58,3 +59,4 @@ listener.listen({
 });
 sw. stop() ;
 // 1 - 4 -> point calculation (n = 4)
+// 9 - 10 -> drawing based on faces (n = 8)
