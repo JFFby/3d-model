@@ -1,11 +1,23 @@
 function FacesBuilder(){
     
+    var getThirdFace = function(shape, _1st, _2st){
+        var _3st = _.find(shape.base, (e) => e.from == _1st.to && e.to == _2st.to )
+                    || _.find(shape.base, (e) => e.to == _1st.to && e.from == _2st.to );
+        if(!_3st){
+            throw new 'line missed';
+        }
+
+        return _3st;
+    }
+
     var buildFace = function(shape, i, lastIndexFn){
+        var _1st = shape.vertical[i];
+        var _2st = shape.vertical[lastIndexFn()];
+        var _3st = getThirdFace(shape, _1st, _2st);
+
         var face = new Face([
-            shape.vertical[i].id,
-            shape.base[i].id,
+            _1st.id, _2st.id, _3st.id
         ]);
-        face.lines.push(shape.vertical[lastIndexFn()].id);
         shape.faces.push(face);
     };
     
@@ -36,7 +48,8 @@ function FacesBuilder(){
     };
     
     var buildVerticalFaces = function(shape){
-        buildFor(shape, buildOuterFace, buildInnerFace);
+        //buildFor(shape, buildOuterFace, buildInnerFace);
+        buildFor(shape, buildInnerFace, buildOuterFace);
     };
     
     var buildFaces = function(shape, arg){
@@ -79,9 +92,9 @@ function FacesBuilder(){
 
             var face = [
                 ol.id,
-                _2nd.id,
+                _4nd.id,
                 il.id,
-                _4nd.id
+                _2nd.id
             ];
 
             outer.faces.push(new Face(face));

@@ -7,7 +7,7 @@ function LineDesigner(ctx, canvas){
 	
 
     var getCoordinate = function(c, axis){
-        return c + (axis === 'x' ? x_center : y_center)
+        return c + (axis === 'x' ? x_center : y_center);
     };
 
     var drawLine = function(line){
@@ -25,24 +25,32 @@ function LineDesigner(ctx, canvas){
     //     return shape.base.concat(shape.vertical);
     // };
 
-    var getLines = function(shape){
+    var getLines = function(shape, shapes){
         var lines = [];
+        
         for(var i = 0; i < shape.faces.length; ++i){
-            lines = lines.concat(shape.faces[i].getFaceLines(shape));
+            var face = shape.faces[i];
+            if(face.isVisible(shapes)){
+                lines = lines.concat(face.getFaceLines(shapes));
+            }
         } 
 
-        lines = _.uniq(lines);
         return lines;  
     };
 
-    this.draw = function(shape){
-        var lines = getLines(shape);
-        ctx.strokeStyle = shape.c;
-        for(var i = 0; i < lines.length; ++i){
-            drawLine(lines[i]);
+    this.draw = function(shapes){
+        for(var j = 0; j < shapes.length; ++j){
+            var shape = shapes[j];
+            var lines = getLines(shape, shapes);
+
+            ctx.strokeStyle = shape.c;
+            for(var i = 0; i < lines.length; ++i){
+                drawLine(lines[i]);
+            }
+            
+            drawCenterInfo(shape);
+
         }
-        
-        drawCenterInfo(shape);
     };
 
     var drawShapes = function(shapes){

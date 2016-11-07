@@ -7,7 +7,7 @@ function LineTransformator(points){
     var fromArrayToPoint = function(array){
         var divider = array[3];
 
-        if(divider < 0.1) divider = 0.1;
+        if(divider <= 0) divider = 0.1;
 
         return new Point.fromXYZ(array[0] / divider, array[1] / divider, array[2] / divider);
     };

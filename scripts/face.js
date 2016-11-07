@@ -5,9 +5,8 @@
         self.lines = lines;
     };
 
-    var getLines = function(){
-        var lines = []
-        var shapes = d3_model.shapes;
+    var getLines = function(shapes){
+        var lines = [];
         for(var i = 0; i < shapes.length; ++i){
             var s = shapes[i];
             lines = lines.concat(s.base).concat(s.vertical);
@@ -16,8 +15,8 @@
         return lines;
     }
 
-    var getFaceLines = function(){
-        var allLines = getLines();
+    var getFaceLines = function(shapes){
+        var allLines = getLines(shapes);
         var self = this;
         var lines = _.filter(allLines, function(l){
             return self.lines.indexOf(l.id) >= 0;
@@ -32,10 +31,14 @@
         return sortedLines;
     };
 
+    var getUbiqPoint = function(line, ...points){
+        return points.indexOf(line.from) >=0 ? line.to : line.from;
+    }
+
     var calculateNormal = function(lines){
-        var _1 = lines[0].from;
-        var _2 = lines[1].from;
-        var _3 = lines[2].from;
+        var _1 = lines[0].to;
+        var _2 = getUbiqPoint(lines[1], _1);
+        var _3 = getUbiqPoint(lines[2], _1, _2);
 
         var x = _1.y * _2.z + _2.y * _3.z + _3.y * _1.z - _2.y * _1.z - _3.y * _2.z - _1.y * _3.z;
         var y = _1.z * _2.x + _2.z * _3.x + _3.z * _1.x - _2.z * _1.x - _3.z * _2.x - _1.z * _3.x;
@@ -48,12 +51,12 @@
         };
     };
 
-    face.prototype.getFaceLines = function(){
-        return getFaceLines.call(this);
+    face.prototype.getFaceLines = function(shapes){
+        return getFaceLines.call(this, shapes);
     };
 
-    face.prototype.calculateNormal = function(){
-        var lines = getFaceLines.call(this);
+    face.prototype.calculateNormal = function(shape){
+        var lines = getFaceLines.call(this, shape);
         return  calculateNormal(lines);
     };
 
@@ -66,8 +69,8 @@
         return avg / lines.length;
     };
 
-    var getAvgPoint = function(){
-        var lines = getFaceLines.call(this);
+    var getAvgPoint = function(shapes){
+        var lines = getFaceLines.call(this, shapes);
         var avgX = getAvg(lines, 'x');
         var avgY = getAvg(lines, 'y');
         var avgZ = getAvg(lines, 'z');
@@ -79,8 +82,8 @@
         };
     };
 
-    var getVectorB = function(point){
-        var avgPoint = getAvgPoint.call(this);
+    var getVectorB = function(point, shapes){
+        var avgPoint = getAvgPoint.call(this, shapes);
         return {
             x: point.x - avgPoint.x,
             y: point.y - avgPoint.y,
@@ -95,19 +98,24 @@
 
     var getCos = function(a, b){
         var ab = a.x * b.x + a.y * b.y + a.z * b.z;
+
+        if(ab === 0 ){
+            return 0;
+        }
+
         return ab / (getVectorLength(a) * getVectorLength(b));
 
     };
 
-    face.prototype.angleBetween = function(shape, point){
-        var a = this.calculateNormal(shape);
-        var b = getVectorB.call(this, shape, point);
+    face.prototype.angleBetween = function(point, shapes){
+        var a = this.calculateNormal(shapes);
+        var b = getVectorB.call(this, point, shapes);
         var cos = getCos(a,b);
         return toDegree(Math.acos(cos));
     };
 
-    face.prototype.isVisible = function(shape){
-        var angle = Math.abs(this.angleBetween(shape, view_point));
+    face.prototype.isVisible = function(shapes){
+        var angle = Math.abs(this.angleBetween(view_point, shapes));
         return angle <= 90;
     };
 

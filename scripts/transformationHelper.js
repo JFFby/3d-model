@@ -8,11 +8,14 @@ var transformationHelper = (function(){
 
     var baseTransformation = function(matrix, transformation){
         designer.clear();
+        var transformedShapes = [];
         for(var i = 0; i < d3_model.shapes.length; ++i){
             var shape = d3_model.shapes[i];
-            var transformadShape = transformation(shape);
-            designer.draw(transformadShape);           
+            var transformedShape = transformation(shape);    
+            transformedShapes.push(transformedShape);
         }
+
+         designer.draw(transformedShapes);
     };
     
     var projectionsNeededInSwapingDimention = [

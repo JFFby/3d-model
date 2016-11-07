@@ -1,7 +1,7 @@
 var d3_model = (function (){
     var settingsToArray = function(shapes_settings){
         return [
-            {r: shapes_settings.r2, h: shapes_settings.h, c:'red',n: shapes_settings.n, shapeType: shapeTypes.inner},
+            {r: shapes_settings.r2, h: shapes_settings.h, c:'white',n: shapes_settings.n, shapeType: shapeTypes.inner},
             {r: shapes_settings.r1, h: shapes_settings.h, c:'black', n: shapes_settings.n, shapeType: shapeTypes.outer}
         ];
     };
@@ -23,7 +23,7 @@ var d3_model = (function (){
             }
 
             facesBuilder.build(this.shapes);
-            this.shapes.forEach(s => designer.draw(s));
+            designer.draw(this.shapes);
             identity.reset();
         }
     };
