@@ -76,11 +76,11 @@ var ProjectionForm = React.createClass((function(){
         vp: {
             p1:{
                 name: 'theta',
-                value: -90
+                value: 90
             },
             p2:{
                 name: 'fi',
-                value:0
+                value:180
             },
             p3: {
                 name: 'ro',

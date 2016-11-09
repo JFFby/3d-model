@@ -15,45 +15,48 @@ var projectionBuilder = new ProjectionBuilder();
 var facesBuilder = new FacesBuilder();
 
 d3_model.start(shapes_settings);
+
+const step = 3; 
+
 listener.listen({
     move: {
         ArrowUp: function(){
-            mover.move(0, -3,0);
+            mover.move(0, -1 * step,0);
         },
         ArrowDown: function(){
-            mover.move(0, 3,0);
+            mover.move(0,  step,0);
         },
         ArrowLeft: function(){
-            mover.move(-3, 0,0);
+            mover.move(-1 * step, 0,0);
         },
         ArrowRight: function(){
-            mover.move(3, 0,0);
+            mover.move( step, 0,0);
         },
         KeyW: function(){
-            mover.move(0, 0, 3);
+            mover.move(0, 0,  step);
         },
         KeyS: function(){
-            mover.move(0, 0, -3);
+            mover.move(0, 0, -1 * step);
         }
     },
     rotate: {
         ArrowUp: function(){
-            rotator.rotate(3,'x');
+            rotator.rotate( step,'x');
         },
         ArrowDown: function(){
-            rotator.rotate(-3,'x');
+            rotator.rotate(-1 * step,'x');
         },
         ArrowLeft: function(){
-            rotator.rotate(3,'z');
+            rotator.rotate( step,'z');
         },
         ArrowRight: function(){
-            rotator.rotate(-3,'z');
+            rotator.rotate(-1 * step,'z');
         },
         KeyW: function(){
-            rotator.rotate(3,'y');
+            rotator.rotate( step,'y');
         },
         KeyS: function(){
-            rotator.rotate(-3,'y');
+            rotator.rotate(-1 * step,'y');
         }
     }
 });

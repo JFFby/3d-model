@@ -55,6 +55,27 @@
         return getFaceLines.call(this, shapes);
     };
 
+     face.prototype.getSortedFaceLines = function(shapes){
+        var lines = getFaceLines.call(this, shapes);
+        var sortedLines = [lines[0]];
+
+        while(lines.length !== sortedLines.length){
+            var nexLine = _.find(lines, {from: sortedLines[sortedLines.length - 1].to});
+            if(typeof nexLine === 'undefined'){
+                nexLine = _.find(lines, (l) => l.to === sortedLines[sortedLines.length - 1].to 
+                    && sortedLines.indexOf(l) < 0);
+
+               if(!nexLine && lines.length === 3){
+                   nexLine = _.find(lines, (l) =>  sortedLines.indexOf(l) < 0);
+               }
+            }
+
+            sortedLines.push(nexLine);
+        }
+
+        return sortedLines;
+    };
+
     face.prototype.calculateNormal = function(shape){
         var lines = getFaceLines.call(this, shape);
         return  calculateNormal(lines);
