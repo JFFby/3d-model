@@ -2,6 +2,7 @@ function Point() {
     this.x = 0;
     this.y = 0;
     this.z = 0;
+    this.id = identity.id();
 }
 
 Point.fromXZ = function (x, z) {
@@ -11,10 +12,11 @@ Point.fromXZ = function (x, z) {
     return p;    
 };
 
-Point.fromXYZ = function (x, y, z) {
+Point.fromXYZ = function (x, y, z, id) {
     var p = Point.fromXZ(x, z);
     p.y = y;
-    return p;  
+    p.id = typeof id  === 'number' ? id : p.id;
+    return p;
 };
 
 Point.prototype.toString = function(){

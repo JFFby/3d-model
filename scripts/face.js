@@ -1,8 +1,8 @@
 (function(global){
-    var face = function(lines){
+    var face = function(points){
         var self = this;
 
-        self.lines = lines;
+        self.points = points;
     };
 
     var getLines = function(shapes){
@@ -11,34 +11,41 @@
             var s = shapes[i];
             lines = lines.concat(s.base).concat(s.vertical);
         }
-
+        
         return lines;
     }
 
-    var getFaceLines = function(shapes){
-        var allLines = getLines(shapes);
-        var self = this;
-        var lines = _.filter(allLines, function(l){
-            return self.lines.indexOf(l.id) >= 0;
-        }); 
-
-        var sortedLines = [];
-        for(var i = 0; i < this.lines.length; ++i){
-            var targetLine = _.find(lines, {id: this.lines[i]});
-            sortedLines.push(targetLine);
+    var getPoints = function(shapes){
+        var lines = getLines(shapes);
+        var points = [];
+        for(var i = 0; i< lines.length; ++i){
+            points.push(lines[i].from);
+            points.push(lines[i].to);
         }
 
-        return sortedLines;
-    };
-
-    var getUbiqPoint = function(line, ...points){
-        return points.indexOf(line.from) >=0 ? line.to : line.from;
+        return _.uniqBy(points, p => p.id);
     }
 
-    var calculateNormal = function(lines){
-        var _1 = lines[0].to;
-        var _2 = getUbiqPoint(lines[1], _1);
-        var _3 = getUbiqPoint(lines[2], _1, _2);
+    var getFacePoints = function(shapes){
+        var allPoints = getPoints(shapes);
+        var self = this;
+        var points = _.filter(allPoints, function(l){
+            return self.points.indexOf(l.id) >= 0;
+        }); 
+
+        var sortedPoints = [];
+        for(var i = 0; i < this.points.length; ++i){
+            var targetPoint = _.find(points, {id: this.points[i]});
+            sortedPoints.push(targetPoint);
+        }
+
+        return sortedPoints;
+    };
+
+    var calculateNormal = function(poitns){
+        var _1 = poitns[0];
+        var _2 = poitns[1];
+        var _3 = poitns[2]
 
         var x = _1.y * _2.z + _2.y * _3.z + _3.y * _1.z - _2.y * _1.z - _3.y * _2.z - _1.y * _3.z;
         var y = _1.z * _2.x + _2.z * _3.x + _3.z * _1.x - _2.z * _1.x - _3.z * _2.x - _1.z * _3.x;
@@ -51,50 +58,29 @@
         };
     };
 
-    face.prototype.getFaceLines = function(shapes){
-        return getFaceLines.call(this, shapes);
-    };
-
-     face.prototype.getSortedFaceLines = function(shapes){
-        var lines = getFaceLines.call(this, shapes);
-        var sortedLines = [lines[0]];
-
-        while(lines.length !== sortedLines.length){
-            var nexLine = _.find(lines, {from: sortedLines[sortedLines.length - 1].to});
-            if(typeof nexLine === 'undefined'){
-                nexLine = _.find(lines, (l) => l.to === sortedLines[sortedLines.length - 1].to 
-                    && sortedLines.indexOf(l) < 0);
-
-               if(!nexLine && lines.length === 3){
-                   nexLine = _.find(lines, (l) =>  sortedLines.indexOf(l) < 0);
-               }
-            }
-
-            sortedLines.push(nexLine);
-        }
-
-        return sortedLines;
+    face.prototype.getFacePoints = function(shapes){
+        return getFacePoints.call(this, shapes);
     };
 
     face.prototype.calculateNormal = function(shape){
-        var lines = getFaceLines.call(this, shape);
-        return  calculateNormal(lines);
+        var poitns = getFacePoints.call(this, shape);
+        return  calculateNormal(poitns);
     };
 
-    var getAvg = function(lines, axis){
+    var getAvg = function(poitns, axis){
         var avg = 0;
-        _.map(lines, function(l)        {
-            avg += l.from[axis];
+        _.map(poitns, function(l)        {
+            avg += l[axis];
         });
 
-        return avg / lines.length;
+        return avg / poitns.length;
     };
 
     var getAvgPoint = function(shapes){
-        var lines = getFaceLines.call(this, shapes);
-        var avgX = getAvg(lines, 'x');
-        var avgY = getAvg(lines, 'y');
-        var avgZ = getAvg(lines, 'z');
+        var points = getFacePoints.call(this, shapes);
+        var avgX = getAvg(points, 'x');
+        var avgY = getAvg(points, 'y');
+        var avgZ = getAvg(points, 'z');
 
         return {
             x: avgX,

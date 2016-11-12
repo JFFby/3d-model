@@ -4,12 +4,12 @@ function LineTransformator(points){
         return [point.x, point.y, point.z, 1];
     };
 
-    var fromArrayToPoint = function(array){
+    var fromArrayToPoint = function(array, point){
         var divider = array[3];
 
         if(divider <= 0) divider = 0.1;
 
-        return new Point.fromXYZ(array[0] / divider, array[1] / divider, array[2] / divider);
+        return new Point.fromXYZ(array[0] / divider, array[1] / divider, array[2] / divider, point.id);
     };
 
     var processPoints = function(points, matrix){
@@ -25,11 +25,11 @@ function LineTransformator(points){
     var processPoint = function(point, moveMatrix){
         var pointArray = createMatrixFromPoint(point);
         var _pointArray = math.multiply(pointArray, moveMatrix);
-        return fromArrayToPoint(_pointArray);
+        return fromArrayToPoint(_pointArray, point);
     };
     
     var processSingleLine = function(line, moveMatrix){
-        var newLine = {id: line.id};
+        var newLine = {};
         for(var j = 0; j < points.length; ++j){
             var point = line[points[j]];
             newLine[points[j]] = processPoint(point, moveMatrix);

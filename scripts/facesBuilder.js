@@ -1,24 +1,15 @@
 function FacesBuilder(){
     
-    var getThirdFace = function(shape, _1st, _2st){
+    var outerDirection = ['to', 'from'];
 
-             var _3st = _.find(shape.base, (e) => e.from == _1st.to && e.to == _2st.to )
-                     || _.find(shape.base, (e) => e.to == _1st.to && e.from == _2st.to );
-
-        // var initialPoints = _.uniq([_1st.from, _1st.to, _2st.from, _2st.to]);
-        // var _3st = _.find(shape.base, e => initialPoints.indexOf(e.from) >= 0 &&
-        //     initialPoints.indexOf(e.to));
-        if(!_3st){
-            throw new 'line missed';
-        }
-
-        return _3st;
-    }
-
-    var buildFace = function(shape, i, lastIndexFn){
-        var _1st = shape.vertical[i];
-        var _2st =  shape.vertical[lastIndexFn()];
-        var _3st = getThirdFace(shape, _1st, _2st);
+    var buildFace = function(shape, i, lastIndexFn, direction){
+        var firstLine = shape.vertical[i];
+        var _1st = firstLine[direction[0]];
+        var _2st =  firstLine[direction[1]];
+        var secondLine = shape.vertical[lastIndexFn()];
+        var _3st = [_1st, _2st].indexOf(secondLine. from) < 0 
+            ? secondLine. from
+            : secondLine. to;
 
         var face = new Face([
             _1st.id, _2st.id, _3st.id
@@ -31,7 +22,7 @@ function FacesBuilder(){
         for(var i = 0; i < length; ++i){
             buildFace(shape, i, function(){
                 return i === length - 1 ? 0 : i + 1;
-            });
+            }, outerDirection);
         }
     };
     
@@ -40,7 +31,7 @@ function FacesBuilder(){
         for(var i = length - 1; i >= 0; --i){
             buildFace(shape, i, function(){
                 return i === 0 ? length - 1: i - 1;
-            });
+            },outerDirection); // _.reverse(outerDirection.slice())
         }
     };
     
@@ -53,7 +44,7 @@ function FacesBuilder(){
     };
     
     var buildVerticalFaces = function(shape){
-        buildFor(shape, buildInnerFace, buildOuterFace);
+        buildFor(shape, buildOuterFace, buildInnerFace);
     };
     
     var buildFaces = function(shape, arg){
@@ -62,86 +53,22 @@ function FacesBuilder(){
         buildHorizontalFaces(shape, arg);
     };
     
-    var buildSingleHorizontalFace = function(shape){
+    var buildSingleHorizontalFace = function(){
         return;
     };
 
-    var createAdditionalLines = function(outer, inner){
-        var length = outer.base.length;
-        for(var i = 0; i < length; ++i){
-            // if(i % 2 == 0){
-                 var line = new Line(outer.base[i].from, inner.base[i].from);
-            // }else{
-            //    var line = new Line(inner.base[i].from, outer.base[i].from);
-            // }
-
-            outer.base.push(line);
-        }
-    };
-
-    var sqr = function(n){
-        return Math.pow(n, 2);
-    };
-
-    var calculateValueForPoint = function(e, s){
-            return Math.sqrt(sqr(e.x - s.x) + sqr(e.y - s.y) + sqr(e.z - s.z));
-    };
-
-    var getClosest = function(p, lines){
-        var points = getPoints(lines, p);
-        var sortedLines = _.sortBy(points, e => calculateValueForPoint(e, p));
-
-        return sortedLines[0];
-    };
-
-    var getPoints = function(lines, p){
-
-        function isPointSuitable(points, searchPoint, thisPoit){
-            return searchPoint != thisPoit && points.indexOf(thisPoit) < 0;
-        }
-
-        var types = ['from', 'to'];
-        var result = [];
-        for(var i = 0; i < lines.length; i++){
-            var line = lines[i];
-            for(var t in types){
-                t = types[t];
-                if(isPointSuitable(result,p,line[t])){
-                    result.push(line[t]);
-                } 
-            }
-        }
-
-        return result;
-    }
-
-    var getAdditionLine = function(point, lines){
-        var closest = getClosest(point, lines);
-        var values = [point, closest];
-
-        return _.find(lines, e => values.indexOf(e.from) >= 0 &&  values.indexOf(e.to) >= 0);
-    }
-
     var buildHorizontalFaceWithHoel = function(outer, inner){
-        createAdditionalLines(outer, inner);
 
         var length = inner.base.length;
         for(var i = 0; i < length; ++i){
             var ol = outer.base[i];
             var il = inner.base[i];
-           
-            var _2nd = getAdditionLine(il.from, outer.base);
-            var _4nd = getAdditionLine(il.to, outer.base);
-
-            if(!_2nd || !_4nd){
-                throw new Error('line not found');
-            }
 
             var face = [
-                ol.id,
-                _4nd.id,
-                il.id,
-                _2nd.id
+                ol.from.id,
+                ol.to.id,
+                il.to.id,
+                il.from.id
             ];
 
             outer.faces.push(new Face(face));

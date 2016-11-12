@@ -15,5 +15,4 @@ var identity = (function(){
 function Line(from, to){
     this.from = from;
     this.to = to;
-    this.id = identity.id();
-};
+}

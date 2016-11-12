@@ -22,25 +22,22 @@ function LineDesigner(ctx, canvas){
     };
 
     var drawFace = function(face, shape, shapes){
-        var lines = shape.shapeType == shapeTypes.inner ?
-            face.getSortedFaceLines(shapes) :
-            face.getFaceLines(shapes);
-        for(var i = 0; i < lines.length; ++i){
-            var line = lines[i];
+        var points = face.getFacePoints(shapes);
+        for(var i = 0; i < points.length; ++i){
+            var point = points[i];
 
             if(i === 0){
                 ctx.beginPath();
-                ctx.moveTo(getCoordinate(line.from.x, 'x'),getCoordinate(line.from.y, 'y'));
-                ctx.lineTo(getCoordinate(line.to.x, 'x'),getCoordinate(line.to.y, 'y'));
+                ctx.moveTo(getCoordinate(point.x, 'x'),getCoordinate(point.y, 'y'));
             }else{
-                ctx.lineTo(getCoordinate(line.from.x, 'x'),getCoordinate(line.from.y, 'y'));
-                ctx.lineTo(getCoordinate(line.to.x, 'x'),getCoordinate(line.to.y, 'y'));
+                ctx.lineTo(getCoordinate(point.x, 'x'),getCoordinate(point.y, 'y'));
             }
-            
-            ctx.strokeStyle = 'green';
-            ctx.stroke();
         }
+
         
+        ctx.lineTo(getCoordinate(points[0].x, 'x'),getCoordinate(points[0].y, 'y'));
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
         ctx.closePath();
         ctx.fillStyle = shape.c;
         ctx.fill();
