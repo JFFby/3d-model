@@ -10,17 +10,6 @@ function LineDesigner(ctx, canvas){
         return c + (axis === 'x' ? x_center : y_center);
     };
 
-    var drawLine = function(face, shapes){
-        var lines = face.getFaceLines(shapes);
-        for(var i = 0; i < lines.length; ++i){
-            var line = lines[i];
-            ctx.beginPath();
-            ctx.moveTo(getCoordinate(line.from.x, 'x'),getCoordinate(line.from.y, 'y'));
-            ctx.lineTo(getCoordinate(line.to.x, 'x'),getCoordinate(line.to.y, 'y'));
-            ctx.stroke();
-        }
-    };
-
     var drawFace = function(face, shape, shapes){
         var points = face.getFacePoints(shapes);
         for(var i = 0; i < points.length; ++i){
@@ -47,7 +36,7 @@ function LineDesigner(ctx, canvas){
         clearCanvas();
     };
 
-    this.draw = function(shapes){
+    var drawShapes = function(shapes){
         for(var j = 0; j < shapes.length; ++j){
             var shape = shapes[j];
             for(var i = 0; i < shape.faces.length; ++i){
@@ -55,19 +44,14 @@ function LineDesigner(ctx, canvas){
                 if(face.isVisible(shapes)){
                     drawFace(face, shape, shapes);
                 }
-                
-                // ctx.strokeStyle = shape.c;
-                // drawLine(face, shapes);
-            }
-            
-            drawCenterInfo(shape);
+            }         
         }
     };
 
-    var drawShapes = function(shapes){
-        for(var i = 0; i < shapes.length; ++i){
-            this.draw(shapes[i]);
-        }
+    this.draw = function(shapes){
+        lightPointHandler && lightPointHandler.draw();
+        drawShapes(shapes);
+        drawCenterInfo(shapes[0]);
     };
 
     var drawCenterInfo = _.throttle(function(shape){
@@ -77,7 +61,8 @@ function LineDesigner(ctx, canvas){
 
     this.cleanAndDraw = function(shapes){
         clearCanvas();
-        drawShapes(shapes);
-        drawCenterInfo(shapes[0]);
+        lightPointHandler && lightPointHandler.draw();
+        this.draw(shapes);
+        drawCenterInfo.call(this, shapes[0]);
     };
 }
