@@ -61,3 +61,15 @@ label
 .proj-control-wrapper label{
     margin-right: 7px;
 }
+
+#light-continer, .light-wrapper{
+    display: inline;
+}
+
+#light-continer{
+    margin-left:30px;
+}
+
+.light-wrapper label{
+    margin-right: 7px;
+}

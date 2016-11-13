@@ -32,7 +32,14 @@ function LightPointHandler(context, canvas, drawer){
 
         });
 
+        self.canvas.addEventListener('mouseup', function(e){
+            if(isDragable){
+                updateLightPoint(e);
+                redraw();
+            }
 
+            isDragable = false;
+        });
     };
 
     var init = function(){
@@ -49,6 +56,16 @@ function LightPointHandler(context, canvas, drawer){
             context.lineWidth = 2;
             context.strokeStyle = '#003300';
             context.stroke();
+            this.onChange && this.onChange(); 
+        },
+
+        onChange: null,
+
+        pushChanges: function(x, y, z){
+            light_point.x = x;
+            light_point.y = y;
+            light_point.z = z;
+            redraw();
         }
     };
 
