@@ -28,7 +28,7 @@ function LineDesigner(ctx, canvas){
         ctx.strokeStyle = 'green';
         ctx.stroke();
         ctx.closePath();
-        ctx.fillStyle = shape.c;
+        ctx.fillStyle = colorHelper.getColor({face, shape, shapes});
         ctx.fill();
     };
 

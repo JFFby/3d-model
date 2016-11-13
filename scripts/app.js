@@ -14,6 +14,7 @@ var scaleHandler = new ScaleHandler();
 var projectionBuilder = new ProjectionBuilder();
 var facesBuilder = new FacesBuilder();
 var lightPointHandler = new LightPointHandler(context, canvas, designer);
+var colorHelper = new ColorHelper();
 
 d3_model.start(shapes_settings);
 

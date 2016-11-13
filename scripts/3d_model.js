@@ -1,8 +1,8 @@
 var d3_model = (function (){
     var settingsToArray = function(shapes_settings){
         return [
-            {r: shapes_settings.r2, h: shapes_settings.h, c:'red',n: shapes_settings.n, shapeType: shapeTypes.inner},
-            {r: shapes_settings.r1, h: shapes_settings.h, c:'black', n: shapes_settings.n, shapeType: shapeTypes.outer}
+            {r: shapes_settings.r2, h: shapes_settings.h, c:'rgb(255, 0, 0)',n: shapes_settings.n, shapeType: shapeTypes.inner},
+            {r: shapes_settings.r1, h: shapes_settings.h, c:'rgb(0, 0, 0)', n: shapes_settings.n, shapeType: shapeTypes.outer}
         ];
     };
     var clear = function(){

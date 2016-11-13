@@ -1,6 +1,6 @@
 (function(){
 
-    const pattern = 'x:\\s*(\\d+);\\s*y:\\s*(\\d+);\\s*z:\\s*(\\d+)';
+    const pattern = 'x:\\s*(\\d+);\\s*y:\\s*(\\d+);\\s*z:\\s*(-?\\d+)';
 
     var getLightPointValue = function(){
         return `x: ${light_point.x}; y: ${light_point.y}; z: ${light_point.z};`;
@@ -25,7 +25,10 @@
             this.setState({value: value});
             if(regex.test(value)){
                 let result = regex.exec(value);
-                lightPointHandler.pushChanges(result[1], result[2], result[3])
+                var x = parseInt(result[1]);
+                var y = parseInt(result[2]);
+                var z = parseInt(result[3]);
+                lightPointHandler.pushChanges(x, y, z);
             }
         }
 
