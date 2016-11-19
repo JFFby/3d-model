@@ -6,13 +6,14 @@ canvas.height = 500;
 var context = canvas.getContext('2d');
 
 var builder = new Builder(); 
-var designer = new LineDesigner(context, canvas);
+var designer = new LineDesigner(context);
 var listener = new KeyboardListener();
 var mover = new Mover();
 var rotator = new Rotator();
 var scaleHandler = new ScaleHandler();
 var projectionBuilder = new ProjectionBuilder();
 var facesBuilder = new FacesBuilder();
+var drawingHelper = new DrawingHelper(canvas);
 var lightPointHandler = new LightPointHandler(context, canvas, designer);
 var colorHelper = new ColorHelper();
 

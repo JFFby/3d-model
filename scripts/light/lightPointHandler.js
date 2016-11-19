@@ -11,8 +11,8 @@ function LightPointHandler(context, canvas, drawer){
     };
 
     var updateLightPoint = function(e){
-         light_point.x = e.layerX;
-         light_point.y = e.layerY;
+         light_point.x = e.layerX - drawingHelper.x_center;
+         light_point.y = e.layerY - drawingHelper.y_center;
     };
 
     var initEventListener = function(){
@@ -25,7 +25,8 @@ function LightPointHandler(context, canvas, drawer){
         }, 100));
 
         self.canvas.addEventListener('mousedown', function(e){
-            var delta = Math.sqrt( Math.pow(light_point.x - e.layerX, 2) + Math.pow(light_point.y - e.layerY, 2) );
+            var delta = Math.sqrt( Math.pow(getCoordinate(light_point.x, 'x') - e.layerX, 2) 
+                + Math.pow(getCoordinate(light_point.y, 'y') - e.layerY, 2) );
             if(delta <= radius){
                 isDragable = true;
             }
@@ -47,10 +48,18 @@ function LightPointHandler(context, canvas, drawer){
         initEventListener();
     };
 
+    
+    var getCoordinate = function(c, axis){
+        return drawingHelper.getCoordinate(c, axis)
+    }
+
     module = {
         draw: function(){
             context.beginPath();
-            context.arc(light_point.x, light_point.y, radius, 0, 2 * Math.PI, false);
+            context.arc(
+                getCoordinate(light_point.x, 'x'),
+                getCoordinate(light_point.y, 'y'),
+                  radius, 0, 2 * Math.PI, false);
             context.fillStyle = 'green';
             context.fill();
             context.lineWidth = 2;

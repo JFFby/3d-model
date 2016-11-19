@@ -55,12 +55,12 @@ function ProjectionBuilder(){
     var zOrtMatrix = [
         [1, 0, 0, 0],
         [0, 1, 0, 0],
-        [0, 0, 0, 0],
+        [0, 0, 1, 0],
         [0, 0, 0, 1]
     ];
 
     var xOrtMatrix = [
-        [0,0,0,0],
+        [1,0,0,0],
         [0,1,0,0],
         [0,0,1,0],
         [0,0,0,1]
@@ -68,7 +68,7 @@ function ProjectionBuilder(){
 
     var yOrtMatrix = [
         [1,0,0,0],
-        [0,0,0,0],
+        [0,1,0,0],
         [0,0,1,0],
         [0,0,0,1]
     ];

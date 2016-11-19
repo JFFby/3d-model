@@ -1,6 +1,6 @@
 (function(){
 
-    const pattern = 'x:\\s*(\\d+);\\s*y:\\s*(\\d+);\\s*z:\\s*(-?\\d+)';
+    const pattern = 'x:\\s*(-?\\d+);\\s*y:\\s*(-?\\d+);\\s*z:\\s*(-?\\d+)';
 
     var getLightPointValue = function(){
         return `x: ${light_point.x}; y: ${light_point.y}; z: ${light_point.z};`;

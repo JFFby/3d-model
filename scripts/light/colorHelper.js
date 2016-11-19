@@ -3,7 +3,7 @@ function ColorHelper(){
     const Ia = 128;
 
     getForOuter = function(Il){
-        var result = Ia + Il;
+        var result = Ia - Il;
 
         return `rgb(${result},${result},${result})`;
     };

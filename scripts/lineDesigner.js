@@ -1,14 +1,10 @@
-function LineDesigner(ctx, canvas){
+function LineDesigner(ctx){
     
-     var x_center = canvas.width / 2,
-        z_center = 0,
-        y_center = (canvas.height / 2) + 135;    
     ctx.lineWidth = 1;
-	
 
     var getCoordinate = function(c, axis){
-        return c + (axis === 'x' ? x_center : y_center);
-    };
+        return drawingHelper.getCoordinate(c, axis)
+    }
 
     var drawFace = function(face, shape, shapes){
         var points = face.getFacePoints(shapes);
@@ -61,8 +57,8 @@ function LineDesigner(ctx, canvas){
 
     this.cleanAndDraw = function(shapes){
         clearCanvas();
-        lightPointHandler && lightPointHandler.draw();
         this.draw(shapes);
         drawCenterInfo.call(this, shapes[0]);
+        lightPointHandler && lightPointHandler.draw();
     };
 }
