@@ -25,6 +25,7 @@ var d3_model = (function (){
             facesBuilder.build(this.shapes);
             designer.draw(this.shapes);
             identity.reset();
-        }
+        },
+        projection: {}
     };
 })();

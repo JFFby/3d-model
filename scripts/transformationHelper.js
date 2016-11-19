@@ -6,8 +6,7 @@ var transformationHelper = (function(){
     var lineTransformator = new LineTransformator(points);
     var dimentionSwapper = new DimentionSwapper(lineGroups, points)
 
-    var baseTransformation = function(matrix, transformation){
-        designer.clear();
+    var baseTransformationLoop = function(matrix, transformation){
         var transformedShapes = [];
         for(var i = 0; i < d3_model.shapes.length; ++i){
             var shape = d3_model.shapes[i];
@@ -15,7 +14,43 @@ var transformationHelper = (function(){
             transformedShapes.push(transformedShape);
         }
 
-         designer.draw(transformedShapes);
+        return transformedShapes;
+    };
+
+    var prepareShapeForProjectionCreation = function(shape){
+        var matrixes = d3_model.projection.matrixes;
+        var name = d3_model.projection.name;
+        var createdProfection = _.merge({}, shape);
+        for(var i = 0; i < matrixes.length; ++ i){
+            createdProfection = transform(createdProfection, matrixes[i]);
+        }
+
+        var dimentionSwapRule =  _.find(
+            projectionsNeededInSwapingDimention,
+                o => o.name === name);
+        return dimentionSwapRule ?
+            dimentionSwapper.swapDimention(createdProfection,dimentionSwapRule.from, dimentionSwapRule.to) :
+                createdProfection;
+    };
+
+    var drawProjection = function(shapes){
+        var projection = d3_model.projection;
+        if(projection.matrixes){
+            return baseTransformationLoop(projection.matrixes, prepareShapeForProjectionCreation);
+        }
+
+        return shapes;
+    }
+
+    var baseTransformation = function(matrix, transformation){
+        designer.clear();
+       
+       var shapes = matrix && transformation 
+        ? baseTransformationLoop(matrix, transformation)
+        : d3_model.shapes;
+        shapes = drawProjection(shapes);
+
+         designer.draw(shapes);
     };
     
     var projectionsNeededInSwapingDimention = [
@@ -39,20 +74,13 @@ var transformationHelper = (function(){
             });
         },
 
-        drawProjection: function(matrixes, name){
-            baseTransformation(matrixes, function(shape){
-                var createdProfection = _.merge({}, shape);
-                for(var i = 0; i < matrixes.length; ++ i){
-                    createdProfection = transform(createdProfection, matrixes[i]);
-                }
+        applyProjection: function(matrixes, name){
+            d3_model.projection = {
+                matrixes: matrixes,
+                name: name
+            };
 
-                var dimentionSwapRule =  _.find(
-                        projectionsNeededInSwapingDimention,
-                        o => o.name === name);
-                return dimentionSwapRule ?
-                    dimentionSwapper.swapDimention(createdProfection,dimentionSwapRule.from, dimentionSwapRule.to) :
-                    createdProfection;
-            });
-        } 
+            this.transform(null);
+        }
     };
 })();

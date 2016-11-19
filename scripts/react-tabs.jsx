@@ -36,6 +36,9 @@ var Tabs = React.createClass((function(){
             var radio = projections[i].getElementsByTagName('input')[0];
             radio.checked = false;
         }
+
+        d3_model.projection = {};
+        designer.cleanAndDraw(d3_model.shapes);
     }
 
     return {
