@@ -76,19 +76,19 @@ var ProjectionForm = React.createClass((function(){
         vp: {
             p1:{
                 name: 'theta',
-                value: 90
+                value: 270
             },
             p2:{
                 name: 'fi',
-                value:180
+                value: 0
             },
             p3: {
                 name: 'ro',
-                value:1
+                value: 100
             },
             p4: {
                 name: 'd',
-                value: 1
+                value: 100
             }
         }
     };
@@ -142,6 +142,12 @@ var ProjectionForm = React.createClass((function(){
         return getProjection.call({state: this.state}, name);
     };
 
+    var updateViewPoint = function(args){
+        if(args[0] === 'vp'){
+            view_point.fromCCS(args[3], args[2], args[1]);
+        }
+    }
+
     return {
         getInitialState: function(){
             return {showControls: false};
@@ -156,6 +162,8 @@ var ProjectionForm = React.createClass((function(){
                 args = processAdditionalValueChange.call(this, element);
             }
             
+            updateViewPoint(args);
+
             projectionBuilder.create(args);
         },
         render:function() {

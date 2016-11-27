@@ -48,7 +48,7 @@ function ProjectionBuilder(){
         var name = getName(args);
         var sw = new Sw('projection: ' + name) ;
         var matrix = getMatrixes(args);
-        transformationHelper.applyProjection(matrix, name);
+        transformationHelper.setProjection(matrix, name);
         sw.stop();
     };
 

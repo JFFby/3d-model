@@ -33,22 +33,12 @@ var transformationHelper = (function(){
                 createdProfection;
     };
 
-    var drawProjection = function(shapes){
-        var projection = d3_model.projection;
-        if(projection.matrixes){
-            return baseTransformationLoop(projection.matrixes, prepareShapeForProjectionCreation);
-        }
-
-        return shapes;
-    }
-
-    var baseTransformation = function(matrix, transformation){
+   var baseTransformation = function(matrix, transformation){
         designer.clear();
        
        var shapes = matrix && transformation 
         ? baseTransformationLoop(matrix, transformation)
         : d3_model.shapes;
-        shapes = drawProjection(shapes);
 
          designer.draw(shapes);
     };
@@ -74,13 +64,22 @@ var transformationHelper = (function(){
             });
         },
 
-        applyProjection: function(matrixes, name){
+        setProjection: function(matrixes, name){
             d3_model.projection = {
                 matrixes: matrixes,
                 name: name
             };
 
             this.transform(null);
+        },
+
+        applyProjection : function(shapes){
+            var projection = d3_model.projection;
+            if(projection.matrixes){
+                return baseTransformationLoop(projection.matrixes, prepareShapeForProjectionCreation);
+            }
+
+            return shapes;
         }
     };
 })();

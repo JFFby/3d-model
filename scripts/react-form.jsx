@@ -6,7 +6,7 @@ var TransformForm = React.createClass({
 				 <Input data={"r2"} value={shapes_settings.r2} ref="r2"/>
 				 <Input data={"h"} value={shapes_settings.h} ref="h"/>
 				 <Input data={"n"} value={shapes_settings.n} ref="n"/>
-                 <Select data={"Action"} values={['move', 'rotate']} />
+                 <Select data={"Action"} values={['rotate', 'move' ]} />
             </div>
         );
     }

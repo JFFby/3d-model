@@ -24,4 +24,11 @@ var shapeTypes = {
 };
 
 var view_point = Point.fromXYZ(0, 0, -5000); 
+
+view_point.reset = function(){
+    view_point.x = 0;
+    view_point.y = 0;
+    view_point.z = 5000;
+};
+
 var light_point = Point.fromXYZ(20, 20, -5000); 

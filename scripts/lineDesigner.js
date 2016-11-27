@@ -6,6 +6,10 @@ function LineDesigner(ctx){
         return drawingHelper.getCoordinate(c, axis)
     }
 
+    var getColor = function(face, args){
+        return face.color || colorHelper.getColor(args);
+    }
+
     var drawFace = function(face, shape, shapes){
         var points = face.getFacePoints(shapes);
         for(var i = 0; i < points.length; ++i){
@@ -24,7 +28,7 @@ function LineDesigner(ctx){
         ctx.strokeStyle = 'green';
         ctx.stroke();
         ctx.closePath();
-        ctx.fillStyle = colorHelper.getColor({face, shape, shapes});
+        ctx.fillStyle = getColor(face, {face, shape, shapes});
         ctx.fill();
     };
 
@@ -32,12 +36,26 @@ function LineDesigner(ctx){
         clearCanvas();
     };
 
+    var isVisible = function(face, shape, shapes){
+        if(!d3_model.projection){
+            return face.isVisible(shapes);
+        } 
+
+        return d3_model.projection.name === 'vp'
+            ? face.isVisible(d3_model.shapes)
+            : face.isVisible(shapes);
+    };
+
     var drawShapes = function(shapes){
+
+        colorHelper.updateShapes(shapes);
+        shapes = transformationHelper.applyProjection(shapes);
+
         for(var j = 0; j < shapes.length; ++j){
             var shape = shapes[j];
             for(var i = 0; i < shape.faces.length; ++i){
                 var face = shape.faces[i];
-                if(face.isVisible(shapes)){
+                if(isVisible(face, shape, shapes)){
                     drawFace(face, shape, shapes);
                 }
             }         

@@ -38,6 +38,7 @@ var Tabs = React.createClass((function(){
         }
 
         d3_model.projection = {};
+        view_point.reset();
         designer.cleanAndDraw(d3_model.shapes);
     }
 

@@ -9,7 +9,7 @@ function ColorHelper(){
     };
 
     getForInner = function(Il){
-        var result = Ia + Il;
+        var result = Ia - Il;
 
         return `rgb(${result},0,0)`;
     };
@@ -22,6 +22,16 @@ function ColorHelper(){
                 return getForOuter(Il);
             }else {
                 return getForInner(Il);
+            }
+        },
+
+        updateShapes: function(shapes){
+            for(var i = 0; i < shapes.length; ++i){
+                var shape = shapes[i];
+                for(var j = 0; j < shape.faces.length; ++j){
+                    var face = shape.faces[j];
+                    face.color = colorHelper.getColor({face, shape, shapes});
+                }
             }
         }
     };

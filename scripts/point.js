@@ -23,3 +23,11 @@ Point.prototype.toString = function(){
     return 'x: ' + this.x + ' y: ' + this.y + ' z: ' + this.z;
 };
 
+Point.prototype.fromCCS = function(ro, sigma, theta){
+    const s = toRad(sigma);
+    const t = toRad(theta);
+    this.x = ro * Math.sin(s) * Math.cos(t); 
+    this.y = ro * Math.sin(s) * Math.sin(t);
+    this.z = ro * Math.cos(s);
+};
+
